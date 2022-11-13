@@ -1,25 +1,16 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
+import { Button, ImageGallery, Loader, Searchbar } from 'components/index';
 import { getImages } from 'services/ApiService';
-import { ToastContainer, toast } from 'react-toastify';
-import { Searchbar } from './Searchbar/Searchbar';
-import ImageGallery from './ImageGallery/ImageGallery';
-import Button from './Button/Button';
-import Loader from './Loader/Loader';
-import { AppContainer } from './App.styled';
-import { GlobalStyle } from './GlobalStyle';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
-
-
-
-
-export class App extends Component{
+export class App extends Component {
   state = {
     images: [],
     query: null,
     page: 1,
     totalPages: null,
     loading: false,
-  }
+  };
 
   async componentDidUpdate(_, prevState) {
     const { query, page, totalPages, images } = this.state;
@@ -32,11 +23,14 @@ export class App extends Component{
         images: [...images, ...res.hits],
         loading: false,
       }));
+
+      
     }
 
     if (page >= totalPages && images !== prevState.images) {
-      toast.warn("We're sorry, but you've reached the end of search results.");
-      return;
+      Notify.warning(
+        "We're sorry, but you've reached the end of search results."
+      );
     }
   }
 
@@ -47,7 +41,7 @@ export class App extends Component{
     const page = 1;
 
     if (value === '') {
-      toast.warn("You didn't enter anything!");
+      Notify.warning("You didn't enter anything!");
       return;
     }
 
@@ -56,7 +50,9 @@ export class App extends Component{
     this.setState({ loading: false });
 
     if (res.hits.length === 0) {
-      toast.error('Sorry, there are no images matching your search query. Please try again.');
+      Notify.failure(
+        'Sorry, there are no images matching your search query. Please try again.'
+      );
       return;
     }
 
@@ -76,25 +72,21 @@ export class App extends Component{
     }));
   };
 
-
   render() {
     const { images, loading, totalPages, page } = this.state;
     const isNotEmpty = images.length !== 0;
     const isNotEndList = page < totalPages;
 
     return (
-      <AppContainer>
+      <>
         <Searchbar onSubmit={this.onSubmit} />
-          {isNotEmpty && <ImageGallery images={images} />}
-          {loading ? (
-            <Loader />
-          ) : (
-            isNotEmpty && isNotEndList && <Button onClick={this.loadMore} />
-          )}
-        <GlobalStyle />
-        <ToastContainer autoClose={3000} />
-      </AppContainer>
-      
+        {isNotEmpty && <ImageGallery images={images} />}
+        {loading ? (
+          <Loader />
+        ) : (
+          isNotEmpty && isNotEndList && <Button onClick={this.loadMore} />
+        )}
+      </>
     );
   }
 }

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 const modalRoot = document.querySelector('#modal-root');
 
-export class Modal extends Component {
+class Modal extends Component {
   componentDidMount() {
     window.addEventListener('keydown', this.onKeyDown);
   }
@@ -41,6 +41,7 @@ export class Modal extends Component {
   }
 }
 
+export default Modal;
 
 Modal.propTypes = {
   image: PropTypes.string,
