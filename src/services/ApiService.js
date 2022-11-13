@@ -17,7 +17,5 @@ export async function getImages(query, page) {
     params: BASE_SEARH_PARAMS,
   });
 
-  console.log(response.data)
-
   return response.data;
 }

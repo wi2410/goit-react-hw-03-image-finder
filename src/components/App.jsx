@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import { getImages } from 'services/ApiService';
+import { ToastContainer, toast } from 'react-toastify';
 import { Searchbar } from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Button from './Button/Button';
 import Loader from './Loader/Loader';
+import { AppContainer } from './App.styled';
+import { GlobalStyle } from './GlobalStyle';
 
-import { ToastContainer, toast } from 'react-toastify';
+
 
 
 
@@ -32,9 +35,8 @@ export class App extends Component{
     }
 
     if (page >= totalPages && images !== prevState.images) {
-      toast.warn(
-        "We're sorry, but you've reached the end of search results."
-      );
+      toast.warn("We're sorry, but you've reached the end of search results.");
+      return;
     }
   }
 
@@ -54,9 +56,7 @@ export class App extends Component{
     this.setState({ loading: false });
 
     if (res.hits.length === 0) {
-      toast.error(
-        'Sorry, there are no images matching your search query. Please try again.'
-      );
+      toast.error('Sorry, there are no images matching your search query. Please try again.');
       return;
     }
 
@@ -83,16 +83,17 @@ export class App extends Component{
     const isNotEndList = page < totalPages;
 
     return (
-      <>
-      <Searchbar onSubmit={this.onSubmit} />
-        {isNotEmpty && <ImageGallery images={images} />}
-        {loading ? (
-          <Loader />
-        ) : (
-          isNotEmpty && isNotEndList && <Button onClick={this.loadMore} />
-        )}
-
-      <ToastContainer autoClose={3000} /></>
+      <AppContainer>
+        <Searchbar onSubmit={this.onSubmit} />
+          {isNotEmpty && <ImageGallery images={images} />}
+          {loading ? (
+            <Loader />
+          ) : (
+            isNotEmpty && isNotEndList && <Button onClick={this.loadMore} />
+          )}
+        <GlobalStyle />
+        <ToastContainer autoClose={3000} />
+      </AppContainer>
       
     );
   }
