@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { getImages } from 'services/ApiService';
-import { SearchBar } from './Searchbar/Searchbar';
+import { Searchbar } from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Button from './Button/Button';
 import Loader from './Loader/Loader';
@@ -45,7 +45,7 @@ export class App extends Component{
     const page = 1;
 
     if (value === '') {
-      Notify.warning("You didn't enter anything!");
+      toast.warn("You didn't enter anything!");
       return;
     }
 
@@ -84,7 +84,7 @@ export class App extends Component{
 
     return (
       <>
-      <SearchBar onSubmit={this.onSubmit} />
+      <Searchbar onSubmit={this.onSubmit} />
         {isNotEmpty && <ImageGallery images={images} />}
         {loading ? (
           <Loader />

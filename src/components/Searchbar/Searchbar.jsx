@@ -1,15 +1,30 @@
-{/* <header class="searchbar">
-  <form class="form">
-    <button type="submit" class="button">
-      <span class="button-label">Search</span>
-    </button>
+import { Header, Form, Button, ButtonLabel, Input } from './Searchbar.styled';
+import { AiOutlineSearch } from 'react-icons/ai';
+import PropTypes from 'prop-types';
 
-    <input
-      class="input"
-      type="text"
-      autocomplete="off"
-      autofocus
-      placeholder="Search images and photos"
-    />
-  </form>
-</header> */}
+export const Searchbar = ({ onSubmit }) => {
+  return (
+    <Header>
+      <Form onSubmit={onSubmit}>
+        <Button type="submit">
+          <AiOutlineSearch size="26px" />
+          <ButtonLabel></ButtonLabel>
+        </Button>
+
+        <Input
+          type="text"
+          autoFocus
+          autoComplete="off"
+          placeholder="Search images and photos"
+          name="search"
+        />
+      </Form>
+    </Header>
+  );
+};
+
+
+
+Searchbar.propTypes = {
+  onSubmit: PropTypes.func,
+};
